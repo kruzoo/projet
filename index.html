@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практикум - ASCII анимации</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <div class="docs-layout">
+        <aside class="docs-nav">
+            <div class="brand">
+                <h1>ASCII Studio</h1>
+            </div>
+
+            <nav>
+                <p class="nav-title">Содержание</p>
+                <a href="#overview">1. Обзор</a>
+                <a href="#features">2. Возможности</a>
+                <a href="#quickstart">3. Быстрый старт</a>
+                <a href="#demo">4. Живое демо</a>
+                <a href="#modules">5. Модули анимаций</a>
+                <a href="#architecture">6. Архитектура и API</a>
+                <a href="#customization">7. Настройка и шифр</a>
+            </nav>
+        </aside>
+
+        <main class="docs-content">
+            <section id="overview" class="doc-card hero-card">
+                <span class="pill">Документация проекта</span>
+                <h2 class="hero-title">Процедурный ASCII-рендерер в браузере</h2>
+                <p class="hero-lead">
+                    <strong>ASCII Studio</strong> — компактный набор ES-модулей для генерации
+                    анимированной текстовой графики в реальном времени без Canvas API и WebGL.
+                    Все сцены строятся математически и выводятся в DOM-контейнер <code>#ascii-canvas</code>.
+                </p>
+                <div class="hero-actions">
+                    <a href="#demo" class="btn-link btn-primary">Перейти к анимациям</a>
+                </div>
+            </section>
+
+            <section id="features" class="doc-card">
+                <h2>Ключевые возможности</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h3>Без зависимостей</h3>
+                        <p>Чистый нативный JavaScript (ES-модули) без сборщиков, фреймворков и сторонних движков.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Живая палитра и шифр</h3>
+                        <p>Меняйте символы на лету и применяйте сдвиг Цезаря для кириллицы и латиницы.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>Процедурный рендер</h3>
+                        <p>Слои глубины, 3D-проекция сферы с материками и симуляция вихря с частицами обломков.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="quickstart" class="doc-card">
+                <h2>Быстрый старт</h2>
+                <p class="muted">
+                    Подключите контейнер <code>#ascii-canvas</code> и модуль <code>main.js</code> в HTML-документе:
+                </p>
+                <pre><code>&lt;div id="ascii-canvas"&gt;&lt;/div&gt;
+&lt;script type="module" src="./main.js"&gt;&lt;/script&gt;</code></pre>
+                <p class="muted note">
+                    Поскольку используются ES-модули, открывайте страницу через локальный сервер
+                    (например, <code>npx serve</code> или Live Server).
+                </p>
+            </section>
+
+            <section id="demo" class="doc-card">
+                <h2>Живое демо</h2>
+                <div class="toolbar">
+                    <div class="tool-group" id="anim-group">
+                        <button type="button" data-anim="matrix" class="active">Матрица</button>
+                        <button type="button" data-anim="tornado">Торнадо</button>
+                        <button type="button" data-anim="earth">Земля (3D)</button>
+                    </div>
+
+                    <input id="input_crypt" type="text" value=".:+*#%@" placeholder="Текст для шифрования">
+
+                    <select id="cipher-select" class="cipher-select">
+                        <option value="caesar">Цезарь</option>
+                        <option value="vigenere">Виженер</option>
+                        <option value="binary">Двоичный код</option>
+                    </select>
+
+                    <div class="battons">
+                        <button id="btnEncrypt">encrypt</button>
+                        <button id="btnDecrypt">decrypt</button>
+                    </div>
+
+                    <label id="capsLook_div">
+                        <input type="checkbox" id="capsLock"> Caps Lock
+                    </label>
+                    <span id="shift-value">16</span>
+                    <input type="range" id="caesar-shift" min="1" max="125" value="16">
+                    <input id="keyVigenere" class="nonee key" type="text" placeholder="Ключ">
+                </div>
+
+                <div class="output_crypt">
+                    <span>Активная строка:</span>
+                    <code id="output_crypt">.:+*#%@</code>
+                </div>
+
+                <div class="stage">
+                    <div id="ascii-canvas"></div>
+                </div>
+            </section>
+
+            <section id="modules" class="doc-card">
+                <h2>Модули анимаций</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Модуль</th>
+                                <th>Палитра по умолчанию</th>
+                                <th>Ключевые особенности</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>matrix.js</code></td>
+                                <td>Катакана и <code>0-9</code></td>
+                                <td>3 слоя глубины на CSS-классах (масштаб <code>0.7 / 1.2 / 3</code> и прозрачность).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>tornado.js</code></td>
+                                <td><code>.:-=+*#%@</code></td>
+                                <td>Спиральная воронка, 75 частиц обломков, пылевой вихрь у земли и зарницы в туче.</td>
+                            </tr>
+                            <tr>
+                                <td><code>ascii-earth.js</code></td>
+                                <td><code>█</code></td>
+                                <td>Кэшированная текстура 360×180, полигоны материков, fBm-шум, атмосфера и звёзды.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="architecture" class="doc-card">
+                <h2>Архитектура и API</h2>
+                <p>
+                    Каждый модуль экспортирует стартовую функцию и получает объект состояния
+                    <code>state</code> вместе с функцией очистки <code>clearAnimation</code>:
+                </p>
+                <pre><code>import { startAsciiEarth } from './ascii-earth.js';
+
+const state = {
+    getSpeed: () => 50,
+    getAnimation: () => 'earth',
+    setIntervalId: (id) => { intervalId = id; },
+    getAsciiCanvas: () => document.getElementById('ascii-canvas'),
+    getChars: (fallback, stripSpaces) => [...],
+};
+
+startAsciiEarth(state, clearAnimation);</code></pre>
+            </section>
+
+            <section id="customization" class="doc-card">
+                <h2>Настройка и шифр</h2>
+                <ul class="doc-list">
+                    <li>
+                        <strong>Шифр Цезаря:</strong> задайте текст в поле ввода и укажите положительный или
+                        отрицательный
+                        сдвиг. Шифруются русские и латинские буквы с сохранением регистра, результат отображается под
+                        панелью
+                        и используется в текущей сцене.
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script src="ciphers.js"></script>
+    <script src="app.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
