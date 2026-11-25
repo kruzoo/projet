@@ -1,6 +1,6 @@
-import { startMatrix } from 'https://cdn.jsdelivr.net/gh/kruzoo/ascii-pack@1ed1492f1de29855597091860d062bb6cb36d57b/matrix.js';
+import { startMatrix } from 'https://cdn.jsdelivr.net/gh/kruzoo/ascii-pack@9992e631e5e00561379e4bb2a0275eea01d6216e/matrix.js';
 import { startAsciiEarth } from 'https://cdn.jsdelivr.net/gh/kruzoo/ascii-pack@main/ascii-earth.js';
-import { startTornado } from 'https://cdn.jsdelivr.net/gh/kruzoo/ascii-pack@1ed1492f1de29855597091860d062bb6cb36d57b/tornado.js';
+import { startTornado } from 'https://cdn.jsdelivr.net/gh/kruzoo/ascii-pack@42115cb603071a2d83e8d59969a49b9b3eb4d76d/tornado.js';
 
 const canvas = document.getElementById('ascii-canvas');
 const textInput = document.getElementById('input_crypt');
@@ -74,7 +74,7 @@ function run(name = current) {
   ANIMS[name]?.(state, clearAnimation);
 }
 
-window.updateAnimationText = function(newText) {
+window.updateAnimationText = function (newText) {
   cachedEncoded = newText;
   if (previewEl) {
     previewEl.textContent = cachedEncoded.trim() ? cachedEncoded : '(по умолчанию)';

@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <div class="docs-layout">
         <aside class="docs-nav">
             <div class="brand">
@@ -51,7 +50,7 @@
                     </div>
                     <div class="feature-item">
                         <h3>Живая палитра и шифр</h3>
-                        <p>Меняйте символы на лету и применяйте сдвиг Цезаря для кириллицы и латиницы.</p>
+                        <p>Меняйте символы на лету и применяйте шифры Цезаря, Виженера или двоичный код.</p>
                     </div>
                     <div class="feature-item">
                         <h3>Процедурный рендер</h3>
@@ -75,6 +74,11 @@
 
             <section id="demo" class="doc-card">
                 <h2>Живое демо</h2>
+
+                <div class="stage">
+                    <div id="ascii-canvas"></div>
+                </div>
+
                 <div class="toolbar">
                     <div class="tool-group" id="anim-group">
                         <button type="button" data-anim="matrix" class="active">Матрица</button>
@@ -82,34 +86,40 @@
                         <button type="button" data-anim="earth">Земля (3D)</button>
                     </div>
 
-                    <input id="input_crypt" type="text" value=".:+*#%@" placeholder="Текст для шифрования">
+                    <div class="cipher-row">
+                        <input id="input_crypt" type="text" value=".:+*#%@" placeholder="Текст для шифрования">
 
-                    <select id="cipher-select" class="cipher-select">
-                        <option value="caesar">Цезарь</option>
-                        <option value="vigenere">Виженер</option>
-                        <option value="binary">Двоичный код</option>
-                    </select>
+                        <div class="cipher-actions">
+                            <select id="cipher-select" class="cipher-select">
+                                <option value="caesar">Цезарь</option>
+                                <option value="vigenere">Виженер</option>
+                                <option value="binary">Двоичный код</option>
+                            </select>
 
-                    <div class="battons">
-                        <button id="btnEncrypt">encrypt</button>
-                        <button id="btnDecrypt">decrypt</button>
+                            <div class="battons">
+                                <button type="button" id="btnEncrypt">encrypt</button>
+                                <button type="button" id="btnDecrypt">decrypt</button>
+                            </div>
+                        </div>
+
+                        <div class="cipher-options">
+                            <label id="capsLook_div">
+                                <input type="checkbox" id="capsLock"> Caps Lock
+                            </label>
+
+                            <div class="shift-control">
+                                <span id="shift-value">16</span>
+                                <input type="range" id="caesar-shift" min="1" max="125" value="16">
+                            </div>
+                        </div>
+
+                        <input id="keyVigenere" class="nonee key" type="text" placeholder="Ключ">
                     </div>
-
-                    <label id="capsLook_div">
-                        <input type="checkbox" id="capsLock"> Caps Lock
-                    </label>
-                    <span id="shift-value">16</span>
-                    <input type="range" id="caesar-shift" min="1" max="125" value="16">
-                    <input id="keyVigenere" class="nonee key" type="text" placeholder="Ключ">
                 </div>
 
                 <div class="output_crypt">
                     <span>Активная строка:</span>
                     <code id="output_crypt">.:+*#%@</code>
-                </div>
-
-                <div class="stage">
-                    <div id="ascii-canvas"></div>
                 </div>
             </section>
 
@@ -128,13 +138,12 @@
                             <tr>
                                 <td><code>matrix.js</code></td>
                                 <td>Катакана и <code>0-9</code></td>
-                                <td>3 слоя глубины на CSS-классах (масштаб <code>0.7 / 1.2 / 3</code> и прозрачность).
-                                </td>
+                                <td>3 слоя глубины на CSS-классах (масштаб <code>0.7 / 1.2 / 3</code> и прозрачность).</td>
                             </tr>
                             <tr>
                                 <td><code>tornado.js</code></td>
                                 <td><code>.:-=+*#%@</code></td>
-                                <td>Спиральная воронка, 75 частиц обломков, пылевой вихрь у земли и зарницы в туче.</td>
+                                <td>Спиральная воронка, 60 частиц обломков, пылевой вихрь у земли и зарницы в туче.</td>
                             </tr>
                             <tr>
                                 <td><code>ascii-earth.js</code></td>
@@ -169,11 +178,15 @@ startAsciiEarth(state, clearAnimation);</code></pre>
                 <h2>Настройка и шифр</h2>
                 <ul class="doc-list">
                     <li>
-                        <strong>Шифр Цезаря:</strong> задайте текст в поле ввода и укажите положительный или
-                        отрицательный
-                        сдвиг. Шифруются русские и латинские буквы с сохранением регистра, результат отображается под
-                        панелью
-                        и используется в текущей сцене.
+                        <strong>Шифр Цезаря:</strong> задайте текст в поле ввода и укажите сдвиг ползунком.
+                        Шифруются цифры, латиница и кириллица, результат отображается под панелью
+                        и сразу используется в текущей сцене.
+                    </li>
+                    <li>
+                        <strong>Шифр Виженера:</strong> сдвиг символов на основе введённого ключевого слова.
+                    </li>
+                    <li>
+                        <strong>Двоичный код:</strong> перевод текста в последовательность битов и обратно.
                     </li>
                 </ul>
             </section>
@@ -184,4 +197,5 @@ startAsciiEarth(state, clearAnimation);</code></pre>
     <script src="app.js"></script>
     <script type="module" src="./main.js"></script>
 </body>
+
 </html>

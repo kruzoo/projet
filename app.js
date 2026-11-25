@@ -6,55 +6,45 @@ const capsLock = document.getElementById('capsLock');
 const capsLockDiv = document.getElementById('capsLook_div');
 const shiftInput = document.getElementById('caesar-shift');
 const shiftValue = document.getElementById('shift-value');
+const shiftControl = document.querySelector('.shift-control');
 const select = document.getElementById('cipher-select');
 const keyVigenere = document.getElementById('keyVigenere');
 
-let shift = Number(shiftInput.value);
+function getCipherKey() {
+  if (select.value === 'caesar') return shiftInput.value;
+  if (select.value === 'vigenere') return keyVigenere.value;
+  return undefined;
+}
+
+function applyCipher(mode) {
+  const cipher = getCipher(select.value);
+  if (!cipher) return;
+
+  const result = cipher[mode](input.value, getCipherKey());
+  output.textContent = result;
+
+  if (typeof window.updateAnimationText === 'function') {
+    window.updateAnimationText(result);
+  }
+}
 
 select.addEventListener('change', () => {
   const isCaesar = select.value === 'caesar';
   const isVigenere = select.value === 'vigenere';
   const isBinary = select.value === 'binary';
 
-  shiftInput.classList.toggle('nonee', !isCaesar);
-  shiftValue.classList.toggle('nonee', !isCaesar);
+  shiftControl.classList.toggle('nonee', !isCaesar);
   keyVigenere.classList.toggle('nonee', !isVigenere);
   capsLockDiv.classList.toggle('nonee', isBinary);
 });
 
 shiftInput.addEventListener('input', () => {
   shiftValue.textContent = shiftInput.value;
-  shift = Number(shiftInput.value);
 });
 
 capsLock.addEventListener('change', () => {
   output.style.textTransform = capsLock.checked ? 'uppercase' : 'none';
 });
 
-btnEncrypt.addEventListener('click', () => {
-  const text = input.value;
-  const cipher = getCipher(select.value);
-  let key;
-  if (select.value === 'caesar') key = shiftInput.value;
-  else if (select.value === 'vigenere') key = keyVigenere.value;
-
-  output.textContent = cipher.encrypt(text, key);
-
-  if (typeof window.updateAnimationText === 'function') {
-    window.updateAnimationText(output.textContent);
-  }
-});
-
-btnDecrypt.addEventListener('click', () => {
-  const text = input.value;
-  const cipher = getCipher(select.value);
-  let key;
-  if (select.value === 'caesar') key = shiftInput.value;
-  else if (select.value === 'vigenere') key = keyVigenere.value;
-
-  output.textContent = cipher.decrypt(text, key);
-
-  if (typeof window.updateAnimationText === 'function') {
-    window.updateAnimationText(output.textContent);
-  }
-});
+btnEncrypt.addEventListener('click', () => applyCipher('encrypt'));
+btnDecrypt.addEventListener('click', () => applyCipher('decrypt'));

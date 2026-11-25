@@ -1,6 +1,5 @@
 const CIPHERS = {};
 function registerCipher(cipher) { CIPHERS[cipher.id] = cipher; }
-function getAllCiphers() { return Object.values(CIPHERS); }
 function getCipher(id) { return CIPHERS[id] || null; }
 
 function charToPos(elm) {
@@ -28,7 +27,7 @@ function shiftCharUnified(elm, shift) {
   return posToChar(newPos);
 }
 
-function caesar_text(text, shift) {
+function caesarText(text, shift) {
   let result = '';
   for (const ch of Array.from(text)) {
     result += shiftCharUnified(ch, shift);
@@ -38,11 +37,8 @@ function caesar_text(text, shift) {
 
 registerCipher({
   id: 'caesar',
-  name: 'Шифр Цезаря',
-  description: 'Сдвиг по единой цепи: цифры + латиница + кириллица.',
-  needsKey: true,
-  encrypt(text, key) { return caesar_text(text, Number(key)); },
-  decrypt(text, key) { return caesar_text(text, -Number(key)); },
+  encrypt(text, key) { return caesarText(text, Number(key)); },
+  decrypt(text, key) { return caesarText(text, -Number(key)); },
 });
 
 function keyToShift(key) {
@@ -57,7 +53,7 @@ function keyToShift(key) {
   return codeKey;
 }
 
-function vigenere_text(text, key, direction) {
+function vigenereText(text, key, direction) {
   const shifts = keyToShift(key);
   if (shifts.length === 0) return text;
   let result = '';
@@ -76,32 +72,25 @@ function vigenere_text(text, key, direction) {
 
 registerCipher({
   id: 'vigenere',
-  name: 'Шифр Виженера',
-  description: 'Сдвиг по ключевому слову.',
-  needsKey: true,
-  encrypt(text, key) { return vigenere_text(text, key, 1); },
-  decrypt(text, key) { return vigenere_text(text, key, -1); },
+  encrypt(text, key) { return vigenereText(text, key, 1); },
+  decrypt(text, key) { return vigenereText(text, key, -1); },
 });
 
 function textToBinary(text) {
   return Array.from(text)
-    .map(ch => ch.codePointAt(0).toString(2))
+    .map((ch) => ch.codePointAt(0).toString(2))
     .join(' ');
 }
 
 function binaryToText(binary) {
-  return binary.trim().split(/\s+/).map(bits => {
+  return binary.trim().split(/\s+/).map((bits) => {
     const code = parseInt(bits, 2);
-    if (isNaN(code)) return '';
-    return String.fromCodePoint(code);
+    return isNaN(code) ? '' : String.fromCodePoint(code);
   }).join('');
 }
 
 registerCipher({
   id: 'binary',
-  name: 'Двоичный код',
-  description: 'Кодирование в двоичное представление.',
-  needsKey: false,
   encrypt(text) { return textToBinary(text); },
   decrypt(text) { return binaryToText(text); },
 });
