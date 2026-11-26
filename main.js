@@ -9,9 +9,6 @@ const previewEl = document.getElementById('output_crypt');
 const animGroup = document.getElementById('anim-group');
 const cipherSelect = document.getElementById('cipher-select');
 const keyVigenereInput = document.getElementById('keyVigenere');
-
-const FRAME_MS = 30;
-
 const ANIMS = {
   matrix: startMatrix,
   tornado: startTornado,
@@ -43,7 +40,7 @@ function updateInputCache() {
 }
 
 const state = {
-  getSpeed: () => FRAME_MS,
+  getSpeed: () => 30,
   getAnimation: () => current,
   setIntervalId: (id) => { intervalId = id; },
   getAsciiCanvas: () => canvas,
