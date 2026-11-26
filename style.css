@@ -361,7 +361,6 @@ pre code {
   color: inherit;
 }
 
-/* Базовые стили кнопок и полей */
 button,
 #input_crypt,
 .cipher-select,
@@ -432,8 +431,6 @@ button.active {
   grid-column: 1 / -1;
   margin-bottom: 6px;
 }
-
-/* Левая колонка (70%): сцена ASCII */
 .stage {
   grid-column: 1;
   grid-row: 2 / span 2;
@@ -507,7 +504,6 @@ button.active {
   opacity: 1;
 }
 
-/* Правая колонка (30%): панель настроек */
 .toolbar {
   grid-column: 2;
   grid-row: 2;
